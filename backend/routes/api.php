@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CallingController;
 use App\Http\Controllers\Api\IntegrationController;
 use App\Http\Controllers\Api\InvitationController;
+use App\Http\Controllers\Api\MeetingController;
 use App\Http\Controllers\Api\StewardshipReportController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -60,10 +61,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('callings/{calling}/vote', [CallingController::class, 'vote']);
 
     // ---- Fase 5: Reuniones ----
-    // Route::apiResource('meetings', MeetingController::class);
-    // Route::post('meetings/{meeting}/invite', [MeetingController::class, 'invite']);
-    // Route::patch('meetings/{meeting}/rsvp', [MeetingController::class, 'rsvp']);
-    // Route::post('meetings/{meeting}/upload-audio', [MeetingController::class, 'uploadAudio']);
+    Route::apiResource('meetings', MeetingController::class);
+    Route::post('meetings/{meeting}/invite', [MeetingController::class, 'invite']);
+    Route::patch('meetings/{meeting}/rsvp', [MeetingController::class, 'rsvp']);
+    Route::post('meetings/{meeting}/upload-audio', [MeetingController::class, 'uploadAudio']);
 
     // ---- IA ----
     Route::post('ai/improve-text', [AiController::class, 'improveText']);
