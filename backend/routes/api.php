@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AiController;
 use App\Http\Controllers\Api\AssignmentController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CallingController;
 use App\Http\Controllers\Api\IntegrationController;
 use App\Http\Controllers\Api\InvitationController;
 use App\Http\Controllers\Api\StewardshipReportController;
@@ -55,8 +56,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('reports', StewardshipReportController::class)->only(['index', 'store', 'show']);
 
     // ---- Fase 4: Llamamientos ----
-    // Route::apiResource('callings', CallingController::class);
-    // Route::post('callings/{calling}/vote', [CallingController::class, 'vote']);
+    Route::apiResource('callings', CallingController::class);
+    Route::post('callings/{calling}/vote', [CallingController::class, 'vote']);
 
     // ---- Fase 5: Reuniones ----
     // Route::apiResource('meetings', MeetingController::class);
