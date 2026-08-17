@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Calling;
 use App\Models\User;
+use App\Notifications\NewCallingProposed;
 use App\Services\VotingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -58,6 +59,10 @@ class CallingController extends Controller
 
         $calling = Calling::create($validated);
         $calling->load('proposer:id,name');
+
+        // Notificar a votantes elegibles
+        User::where('role', 'sumo_consejo')->where('is_active', true)->get()
+            ->each(fn($u) => $u->notify(new NewCallingProposed($calling)));
 
         return response()->json([
             'message' => 'Llamamiento propuesto correctamente.',

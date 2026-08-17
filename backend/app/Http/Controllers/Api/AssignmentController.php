@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Assignment;
+use App\Models\User;
+use App\Notifications\AssignmentCreated;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -55,6 +57,10 @@ class AssignmentController extends Controller
 
         $assignment = Assignment::create($validated);
         $assignment->load(['creator:id,name', 'assignee:id,name']);
+
+        // Notificar al asignado
+        $assignee = User::find($validated['assigned_to']);
+        $assignee?->notify(new AssignmentCreated($assignment));
 
         return response()->json([
             'message' => 'Asignación creada correctamente.',

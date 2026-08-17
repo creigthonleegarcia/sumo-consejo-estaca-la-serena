@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Jobs\ProcessAudioJob;
 use App\Models\Meeting;
 use App\Models\MeetingInvitation;
+use App\Models\User;
+use App\Notifications\MeetingInvited;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -114,6 +116,8 @@ class MeetingController extends Controller
                     'user_id' => $userId,
                     'response' => 'pending',
                 ]);
+                // Notificar al invitado
+                User::find($userId)?->notify(new MeetingInvited($meeting));
                 $created++;
             }
         }
